@@ -103,7 +103,7 @@ unsigned int get_right_tower(unsigned int tower)
 unsigned int top_element(unsigned int **const game, unsigned int tower, unsigned int height)
 {
 	unsigned int val = 0;
-	unsigned int index = height - 1;
+	int index = height - 1;
 
 	while (index != -1 && game[tower][index] != 0)
 	{
