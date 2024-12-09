@@ -1,5 +1,5 @@
 /*
- *	to solve the tower of hanoi you move in a clockwise, instruction pointer system, where the current pointer will move the topmost disc to the left stick if the focused tower height is even,
+ *	to solve the tower of hanoi you move in a clockwise system which will move the topmost disc to the left stick if the focused tower height is even,
  *	and to the right stick if the tower is odd,
  *	the clockwise rotation works as if the disc is moved right, the instruction pointer is moved right, and scans the topmost focused disc for any left/right movements, then moves to the next one
  *
@@ -21,10 +21,11 @@ unsigned int	get_left_tower(unsigned int);
 unsigned int	get_right_tower(unsigned int);
 unsigned int	tower_height(unsigned int, unsigned int **const, unsigned int);
 bool		possible_move(unsigned int, unsigned int **const, unsigned int, unsigned int);
-unsigned int	top_element(unsigned int** const, unsigned int, unsigned int);
+int		top_element(unsigned int** const, unsigned int, unsigned int);
 unsigned int** 	left_move_top(unsigned int**, unsigned int, unsigned int height);
 unsigned int**	right_move_top(unsigned int**, unsigned int, unsigned int height);
 
+// brief: moves the selected element to the left pole
 unsigned int** left_move_top(unsigned int **game, unsigned int tower, unsigned int height)
 {	
 	unsigned int left_tower = get_left_tower(tower);
@@ -45,8 +46,9 @@ unsigned int** left_move_top(unsigned int **game, unsigned int tower, unsigned i
 	};
 
 	return game;
-}
+} // left_move_top
 
+// brief: moves the selected element to the right pole
 unsigned int** right_move_top(unsigned int **game, unsigned int tower, unsigned int height)
 {
 	unsigned int right_tower = get_right_tower(tower);
@@ -100,7 +102,7 @@ unsigned int get_right_tower(unsigned int tower)
 } // get_right_tower
 
 // brief: Returns the topmost element of the specified tower
-unsigned int top_element(unsigned int **const game, unsigned int tower, unsigned int height)
+int top_element(unsigned int **const game, unsigned int tower, unsigned int height)
 {
 	unsigned int val = 0;
 	int index = height - 1;
