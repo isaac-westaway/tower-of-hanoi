@@ -15,18 +15,18 @@
 #include <stdbool.h>
 #include <math.h>
 
-void 		solve(unsigned int, unsigned int**, unsigned int, unsigned int, unsigned int**);
-void 		solve_tower(unsigned int);
-unsigned int	get_left_tower(unsigned int);
-unsigned int	get_right_tower(unsigned int);
-unsigned int	tower_height(unsigned int, unsigned int **const, unsigned int);
-bool		possible_move(unsigned int, unsigned int **const, unsigned int, unsigned int);
-int		top_element(unsigned int** const, unsigned int, unsigned int);
-unsigned int** 	left_move_top(unsigned int**, unsigned int, unsigned int height);
-unsigned int**	right_move_top(unsigned int**, unsigned int, unsigned int height);
+void 		solve(const unsigned int, unsigned int**, unsigned int, unsigned int, const unsigned int** const);
+void 		solve_tower(const unsigned int);
+unsigned int	get_left_tower(const unsigned int);
+unsigned int	get_right_tower(const unsigned int);
+unsigned int	tower_height(const unsigned int, unsigned int **const, const unsigned int);
+bool		possible_move(const unsigned int, unsigned int **const, const unsigned int, const unsigned int);
+unsigned int	top_element(unsigned int** const, const unsigned int, const unsigned int);
+unsigned int** 	left_move_top(unsigned int**, const unsigned int, const unsigned int height);
+unsigned int**	right_move_top(unsigned int**, const unsigned int, const unsigned int height);
 
 // brief: moves the selected element to the left pole
-unsigned int** left_move_top(unsigned int **game, unsigned int tower, unsigned int height)
+unsigned int** left_move_top(unsigned int **game, const unsigned int tower, const unsigned int height)
 {	
 	unsigned int left_tower = get_left_tower(tower);
 	unsigned int curr_top_element = top_element(game, tower, height);
@@ -49,7 +49,7 @@ unsigned int** left_move_top(unsigned int **game, unsigned int tower, unsigned i
 } // left_move_top
 
 // brief: moves the selected element to the right pole
-unsigned int** right_move_top(unsigned int **game, unsigned int tower, unsigned int height)
+unsigned int** right_move_top(unsigned int **game, const unsigned int tower, const unsigned int height)
 {
 	unsigned int right_tower = get_right_tower(tower);
 	unsigned int curr_top_element = top_element(game, tower, height);
@@ -69,9 +69,9 @@ unsigned int** right_move_top(unsigned int **game, unsigned int tower, unsigned 
 	};
 
 	return game;
-};
+} // right_move_top
 
-unsigned int get_left_tower(unsigned int tower)
+unsigned int get_left_tower(const unsigned int tower)
 {// maybe handle error cases?
 	switch (tower)
 	{
@@ -86,7 +86,7 @@ unsigned int get_left_tower(unsigned int tower)
 	return -1; // error
 } // get_left_tower
 
-unsigned int get_right_tower(unsigned int tower)
+unsigned int get_right_tower(const unsigned int tower)
 {
 	switch (tower)
 	{
@@ -102,7 +102,7 @@ unsigned int get_right_tower(unsigned int tower)
 } // get_right_tower
 
 // brief: Returns the topmost element of the specified tower
-int top_element(unsigned int **const game, unsigned int tower, unsigned int height)
+unsigned int top_element(unsigned int **const game, const unsigned int tower, const unsigned int height)
 {
 	unsigned int val = 0;
 	int index = height - 1;
@@ -117,21 +117,21 @@ int top_element(unsigned int **const game, unsigned int tower, unsigned int heig
 } // top_element
 
 // brief: Returns the height of the specified tower
-unsigned int tower_height(unsigned int height, unsigned int **const game, unsigned int tower)
+unsigned int tower_height(const unsigned int height, unsigned int **const game, const unsigned int tower)
 {
-	unsigned  int tower_height = 0;
+	unsigned int th = 0;
 
 	for (unsigned int i = 0; i < height; i++)
 	{
 		if (game[tower][i] != 0)
-			++tower_height;
+			++th;
 	};
 
-	return tower_height;
+	return th;
 } // tower_height
 
 // brief: Checks if there exists a possible move for the current tower
-bool possible_move(unsigned int height, unsigned int **const game, unsigned int tower, unsigned int next_tower)
+bool possible_move(const unsigned int height, unsigned int **const game, const unsigned int tower, const unsigned int next_tower)
 {
 	if (game[tower][height - 1] == 0) return false;
 
@@ -154,11 +154,11 @@ bool possible_move(unsigned int height, unsigned int **const game, unsigned int 
 } // possible_move
 
 // brief: Solving algorithm for tower of hanoi
-void solve(unsigned int height, 
+void solve(const unsigned int height, 
 		unsigned int **game, 
 		unsigned int number_of_operations, 
 		unsigned int instruction_index,
-		unsigned int **solution
+		const unsigned int **const solution
 		)
 {
 	printf("\nNew Iteration\nNumber Of Operations: %d\nInstruction Index: %d\n", number_of_operations, instruction_index);	
@@ -235,7 +235,7 @@ void solve(unsigned int height,
 	};
 } // solve
 
-void solve_tower(unsigned int height)
+void solve_tower(const unsigned int height)
 {
 	if (height == 1 || height == 0)
 	{
@@ -258,12 +258,14 @@ void solve_tower(unsigned int height)
 		solution[2][i] = i + 1;
 	};	
 
-	solve(height, game, 0, 0, solution);
+	solve(height, game, 0, 0, (const unsigned int** const)solution);
 
+	free(game);
+	free(solution);
 
 } // solve_tower
 
 int main(int argc, char **argv) 
 {
-	solve_tower(9);
+	solve_tower(12);
 }
